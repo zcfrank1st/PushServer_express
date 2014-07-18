@@ -1,18 +1,23 @@
+var fs = require('fs');
 var redis = require('redis');
 var express = require('express');
+var morgan = require('morgan');
 var config = require('./config.js');
 
 var app = express();
 
+app.use(morgan({
+  stream: fs.createWriteStream(config.logger + 'log.txt', {
+    flags: 'w'
+  })
+}));
+
 // 监听路径 channel? X=XXX  准备channel X为 日期 plus UUID
-app.get('/channel', function (req, res) {
+app.get('/channel/:c', function (req, res) {
   'use strict';
-  var channel = [];
-  for (var key in req.query) {
-    channel.push(key);
-  }
+  var channel = req.param('c');
   var rclient = redis.createClient(config.rport, config.rhost);
-  rclient.subscribe(channel[0]);
+  rclient.subscribe(channel);
   rclient.on('message', function (channel, message) {
     res.writeHead(200, {
       'Content-Type': 'application/json',
