@@ -1,0 +1,15 @@
+{
+  "name": "pushServer_express",
+  "version": "0.0.1",
+  "description": "a push server based on express",
+  "main": "app.js",
+  "author": "zcfrank1st",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.6.1",
+    "redis": "^0.11.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.6"
+  }
+}
